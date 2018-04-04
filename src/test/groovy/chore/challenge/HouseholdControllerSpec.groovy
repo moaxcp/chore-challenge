@@ -5,7 +5,7 @@ import grails.testing.web.controllers.ControllerUnitTest
 import grails.validation.ValidationException
 import spock.lang.*
 
-class ChoreControllerSpec extends Specification implements ControllerUnitTest<ChoreController>, DomainUnitTest<Chore> {
+class HouseholdControllerSpec extends Specification implements ControllerUnitTest<HouseholdController>, DomainUnitTest<Household> {
 
     def populateValidParams(params) {
         assert params != null
@@ -17,7 +17,7 @@ class ChoreControllerSpec extends Specification implements ControllerUnitTest<Ch
 
     void "Test the index action returns the correct model"() {
         given:
-        controller.choreService = Mock(ChoreService) {
+        controller.householdService = Mock(HouseholdService) {
             1 * list(_) >> []
             1 * count() >> 0
         }
@@ -26,8 +26,8 @@ class ChoreControllerSpec extends Specification implements ControllerUnitTest<Ch
         controller.index()
 
         then:"The model is correct"
-        !model.choreList
-        model.choreCount == 0
+        !model.householdList
+        model.householdCount == 0
     }
 
     void "Test the create action returns the correct model"() {
@@ -35,7 +35,7 @@ class ChoreControllerSpec extends Specification implements ControllerUnitTest<Ch
         controller.create()
 
         then:"The model is correctly created"
-        model.chore!= null
+        model.household!= null
     }
 
     void "Test the save action with a null instance"() {
@@ -45,14 +45,14 @@ class ChoreControllerSpec extends Specification implements ControllerUnitTest<Ch
         controller.save(null)
 
         then:"A 404 error is returned"
-        response.redirectedUrl == '/chore/index'
+        response.redirectedUrl == '/household/index'
         flash.message != null
     }
 
     void "Test the save action correctly persists"() {
         given:
-        controller.choreService = Mock(ChoreService) {
-            1 * save(_ as Chore)
+        controller.householdService = Mock(HouseholdService) {
+            1 * save(_ as Household)
         }
 
         when:"The save action is executed with a valid instance"
@@ -60,38 +60,38 @@ class ChoreControllerSpec extends Specification implements ControllerUnitTest<Ch
         request.contentType = FORM_CONTENT_TYPE
         request.method = 'POST'
         populateValidParams(params)
-        def chore = new Chore(params)
-        chore.id = 1
+        def household = new Household(params)
+        household.id = 1
 
-        controller.save(chore)
+        controller.save(household)
 
         then:"A redirect is issued to the show action"
-        response.redirectedUrl == '/chore/show/1'
+        response.redirectedUrl == '/household/show/1'
         controller.flash.message != null
     }
 
     void "Test the save action with an invalid instance"() {
         given:
-        controller.choreService = Mock(ChoreService) {
-            1 * save(_ as Chore) >> { Chore chore ->
-                throw new ValidationException("Invalid instance", chore.errors)
+        controller.householdService = Mock(HouseholdService) {
+            1 * save(_ as Household) >> { Household household ->
+                throw new ValidationException("Invalid instance", household.errors)
             }
         }
 
         when:"The save action is executed with an invalid instance"
         request.contentType = FORM_CONTENT_TYPE
         request.method = 'POST'
-        def chore = new Chore()
-        controller.save(chore)
+        def household = new Household()
+        controller.save(household)
 
         then:"The create view is rendered again with the correct model"
-        model.chore != null
+        model.household != null
         view == 'create'
     }
 
     void "Test the show action with a null id"() {
         given:
-        controller.choreService = Mock(ChoreService) {
+        controller.householdService = Mock(HouseholdService) {
             1 * get(null) >> null
         }
 
@@ -104,20 +104,20 @@ class ChoreControllerSpec extends Specification implements ControllerUnitTest<Ch
 
     void "Test the show action with a valid id"() {
         given:
-        controller.choreService = Mock(ChoreService) {
-            1 * get(2) >> new Chore()
+        controller.householdService = Mock(HouseholdService) {
+            1 * get(2) >> new Household()
         }
 
         when:"A domain instance is passed to the show action"
         controller.show(2)
 
         then:"A model is populated containing the domain instance"
-        model.chore instanceof Chore
+        model.household instanceof Household
     }
 
     void "Test the edit action with a null id"() {
         given:
-        controller.choreService = Mock(ChoreService) {
+        controller.householdService = Mock(HouseholdService) {
             1 * get(null) >> null
         }
 
@@ -130,15 +130,15 @@ class ChoreControllerSpec extends Specification implements ControllerUnitTest<Ch
 
     void "Test the edit action with a valid id"() {
         given:
-        controller.choreService = Mock(ChoreService) {
-            1 * get(2) >> new Chore()
+        controller.householdService = Mock(HouseholdService) {
+            1 * get(2) >> new Household()
         }
 
         when:"A domain instance is passed to the show action"
         controller.edit(2)
 
         then:"A model is populated containing the domain instance"
-        model.chore instanceof Chore
+        model.household instanceof Household
     }
 
 
@@ -149,14 +149,14 @@ class ChoreControllerSpec extends Specification implements ControllerUnitTest<Ch
         controller.update(null)
 
         then:"A 404 error is returned"
-        response.redirectedUrl == '/chore/index'
+        response.redirectedUrl == '/household/index'
         flash.message != null
     }
 
     void "Test the update action correctly persists"() {
         given:
-        controller.choreService = Mock(ChoreService) {
-            1 * save(_ as Chore)
+        controller.householdService = Mock(HouseholdService) {
+            1 * save(_ as Household)
         }
 
         when:"The save action is executed with a valid instance"
@@ -164,31 +164,31 @@ class ChoreControllerSpec extends Specification implements ControllerUnitTest<Ch
         request.contentType = FORM_CONTENT_TYPE
         request.method = 'PUT'
         populateValidParams(params)
-        def chore = new Chore(params)
-        chore.id = 1
+        def household = new Household(params)
+        household.id = 1
 
-        controller.update(chore)
+        controller.update(household)
 
         then:"A redirect is issued to the show action"
-        response.redirectedUrl == '/chore/show/1'
+        response.redirectedUrl == '/household/show/1'
         controller.flash.message != null
     }
 
     void "Test the update action with an invalid instance"() {
         given:
-        controller.choreService = Mock(ChoreService) {
-            1 * save(_ as Chore) >> { Chore chore ->
-                throw new ValidationException("Invalid instance", chore.errors)
+        controller.householdService = Mock(HouseholdService) {
+            1 * save(_ as Household) >> { Household household ->
+                throw new ValidationException("Invalid instance", household.errors)
             }
         }
 
         when:"The save action is executed with an invalid instance"
         request.contentType = FORM_CONTENT_TYPE
         request.method = 'PUT'
-        controller.update(new Chore())
+        controller.update(new Household())
 
         then:"The edit view is rendered again with the correct model"
-        model.chore != null
+        model.household != null
         view == 'edit'
     }
 
@@ -199,13 +199,13 @@ class ChoreControllerSpec extends Specification implements ControllerUnitTest<Ch
         controller.delete(null)
 
         then:"A 404 is returned"
-        response.redirectedUrl == '/chore/index'
+        response.redirectedUrl == '/household/index'
         flash.message != null
     }
 
     void "Test the delete action with an instance"() {
         given:
-        controller.choreService = Mock(ChoreService) {
+        controller.householdService = Mock(HouseholdService) {
             1 * delete(2)
         }
 
@@ -215,7 +215,7 @@ class ChoreControllerSpec extends Specification implements ControllerUnitTest<Ch
         controller.delete(2)
 
         then:"The user is redirected to index"
-        response.redirectedUrl == '/chore/index'
+        response.redirectedUrl == '/household/index'
         flash.message != null
     }
 }

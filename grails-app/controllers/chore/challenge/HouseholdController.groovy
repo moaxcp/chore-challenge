@@ -5,75 +5,74 @@ import grails.validation.ValidationException
 import static org.springframework.http.HttpStatus.*
 
 @Secured('ROLE_USER')
-class ChoreController {
+class HouseholdController {
 
-    ChoreService choreService
-    ZoneService zoneService
+    HouseholdService householdService
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
-        respond choreService.list(params), model:[choreCount: choreService.count()]
+        respond householdService.list(params), model:[householdCount: householdService.count()]
     }
 
     def show(Long id) {
-        respond choreService.get(id)
+        respond householdService.get(id)
     }
 
     @Secured('ROLE_HOUSE_ADMIN')
     def create() {
-        respond new Chore(params), model:[zones:zoneService.list()]
+        respond new Household(params)
     }
 
     @Secured('ROLE_HOUSE_ADMIN')
-    def save(Chore chore) {
-        if (chore == null) {
+    def save(Household household) {
+        if (household == null) {
             notFound()
             return
         }
 
         try {
-            choreService.save(chore)
+            householdService.save(household)
         } catch (ValidationException e) {
-            respond chore.errors, view:'create'
+            respond household.errors, view:'create'
             return
         }
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'chore.label', default: 'Chore'), chore.id])
-                redirect chore
+                flash.message = message(code: 'default.created.message', args: [message(code: 'household.label', default: 'Household'), household.id])
+                redirect household
             }
-            '*' { respond chore, [status: CREATED] }
+            '*' { respond household, [status: CREATED] }
         }
     }
 
     @Secured('ROLE_HOUSE_ADMIN')
     def edit(Long id) {
-        respond choreService.get(id)
+        respond householdService.get(id)
     }
 
     @Secured('ROLE_HOUSE_ADMIN')
-    def update(Chore chore) {
-        if (chore == null) {
+    def update(Household household) {
+        if (household == null) {
             notFound()
             return
         }
 
         try {
-            choreService.save(chore)
+            householdService.save(household)
         } catch (ValidationException e) {
-            respond chore.errors, view:'edit'
+            respond household.errors, view:'edit'
             return
         }
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'chore.label', default: 'Chore'), chore.id])
-                redirect chore
+                flash.message = message(code: 'default.updated.message', args: [message(code: 'household.label', default: 'Household'), household.id])
+                redirect household
             }
-            '*'{ respond chore, [status: OK] }
+            '*'{ respond household, [status: OK] }
         }
     }
 
@@ -84,11 +83,11 @@ class ChoreController {
             return
         }
 
-        choreService.delete(id)
+        householdService.delete(id)
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.deleted.message', args: [message(code: 'chore.label', default: 'Chore'), id])
+                flash.message = message(code: 'default.deleted.message', args: [message(code: 'household.label', default: 'Household'), id])
                 redirect action:"index", method:"GET"
             }
             '*'{ render status: NO_CONTENT }
@@ -98,7 +97,7 @@ class ChoreController {
     protected void notFound() {
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.not.found.message', args: [message(code: 'chore.label', default: 'Chore'), params.id])
+                flash.message = message(code: 'default.not.found.message', args: [message(code: 'household.label', default: 'Household'), params.id])
                 redirect action: "index", method: "GET"
             }
             '*'{ render status: NOT_FOUND }

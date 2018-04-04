@@ -1,11 +1,7 @@
-
-
 // Added by the Spring Security Core plugin:
 grails.plugin.springsecurity.userLookup.userDomainClassName = 'chore.challenge.User'
 grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'chore.challenge.UserRole'
 grails.plugin.springsecurity.authority.className = 'chore.challenge.Role'
-grails.plugin.springsecurity.authority.groupAuthorityNameField = 'authorities'
-grails.plugin.springsecurity.useRoleGroups = true
 grails.plugin.springsecurity.controllerAnnotations.staticRules = [
 	[pattern: '/',               access: ['permitAll']],
 	[pattern: '/error',          access: ['permitAll']],
@@ -27,4 +23,3 @@ grails.plugin.springsecurity.filterChain.chainMap = [
 	[pattern: '/**/favicon.ico', filters: 'none'],
 	[pattern: '/**',             filters: 'JOINED_FILTERS']
 ]
-

@@ -1,15 +1,14 @@
 package chore.challenge
 
 class Chore {
+    Household household
 
-    RoleGroup group
-
-    String name
+    String summary
     String description
     int points
     String schedule
     Zone zone
-    Period finishBy
+    Period finishBy = Period.ANYTIME
     List<User> includeUsers
     List<User> excludeUsers
 
@@ -21,6 +20,7 @@ class Chore {
     }
 
     static constraints = {
-        name unique:true
+        summary unique:true
+        description nullable:true
     }
 }

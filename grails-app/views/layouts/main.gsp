@@ -45,6 +45,6 @@
     </div>
 
     <asset:javascript src="application.js"/>
-
+    <g:pageProperty name="page.javascript"/>
 </body>
 </html>

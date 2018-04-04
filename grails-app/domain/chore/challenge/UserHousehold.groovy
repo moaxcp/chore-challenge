@@ -1,11 +1,8 @@
 package chore.challenge
 
-class Zone {
-
+class UserHousehold {
+    User user
     Household household
-    String name
-
     static constraints = {
-        name unique:true
     }
 }

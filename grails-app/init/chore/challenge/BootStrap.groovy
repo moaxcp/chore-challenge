@@ -4,13 +4,10 @@ class BootStrap {
 
     def init = { servletContext ->
         Role userRole = new Role(authority:'ROLE_USER').save()
-        Role adminRole = new Role(authority:'ROLE_ADMIN').save()
+        Role adminRole = new Role(authority:'ROLE_HOUSE_ADMIN').save()
+        Role siteAdmin = new Role(authority:'ROLE_SITE_ADMIN').save()
 
-        RoleGroup mercier = new RoleGroup(name:'Mercier').save()
-        RoleGroup mercierAdmin = new RoleGroup(name:'MercierAdmin').save()
-
-        RoleGroupRole.create(mercier, userRole, true)
-        RoleGroupRole.create(mercierAdmin, adminRole, true)
+        Household mercier = new Household(name:'mercier').save()
 
         def john = new User(username:'john', password:'password').save()
         def megan = new User(username:'megan', password:'password').save()
@@ -19,17 +16,19 @@ class BootStrap {
         def lucas = new User(username:'lucas', password:'password', enabled:false).save()
 
         [john, megan, elijah, caleb, lucas].each {
-            UserRoleGroup.create(it, mercier, true)
+            UserRole.create(it, userRole, true)
+            new UserHousehold(user:it, household:mercier).save()
         }
         [john, megan].each {
-            UserRoleGroup.create(it, mercierAdmin, true)
+            UserRole.create(it, adminRole, true)
+            UserRole.create(it, siteAdmin, true)
         }
 
-
-        assert RoleGroup.count() == 2
         assert User.count() == 5
-        assert Role.count() == 2
-        assert UserRoleGroup.count() == 7
+        assert Role.count() == 3
+        assert UserRole.count() == 9
+
+        Zone zone = new Zone(name:'Living Room', household:mercier).save()
     }
     def destroy = {
     }

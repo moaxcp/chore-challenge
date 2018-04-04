@@ -18,8 +18,8 @@ class User implements Serializable {
     boolean accountLocked
     boolean passwordExpired
 
-    Set<RoleGroup> getAuthorities() {
-        (UserRoleGroup.findAllByUser(this) as List<UserRoleGroup>)*.roleGroup as Set<RoleGroup>
+    Set<Role> getAuthorities() {
+        (UserRole.findAllByUser(this) as List<UserRole>)*.role as Set<Role>
     }
 
     static constraints = {
