@@ -3,7 +3,7 @@ package chore.challenge
 import grails.testing.gorm.DomainUnitTest
 import spock.lang.Specification
 
-class UserHouseholdSpec extends Specification implements DomainUnitTest<UserHousehold> {
+class HouseholdHomeControllerSpec extends Specification implements DomainUnitTest<HouseholdHomeController> {
 
     def setup() {
     }

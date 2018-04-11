@@ -36,7 +36,7 @@
                         <f:field property="points"/>
                         <f:field property="finishBy"/>
                         <f:field property="zone">
-                            <g:select name="zone" from="${zones}" optionKey="name" optionValue="name"/>
+                            <g:select id="zone" name="chore.zone.name" from="${zones}" optionKey="name" optionValue="name"/>
                         </f:field>
                         <f:field property="schedule"/>
                         <f:field property="excludeUsers"/>

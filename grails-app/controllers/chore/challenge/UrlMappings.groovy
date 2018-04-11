@@ -3,13 +3,14 @@ package chore.challenge
 class UrlMappings {
 
     static mappings = {
+        "/householdHome/$householdId/$action?/$id?"(controller:"householdHome")
         "/$controller/$action?/$id?(.$format)?"{
             constraints {
                 // apply constraints here
             }
         }
 
-        "/"(view:"/index")
+        "/"(controller:"home")
         "500"(view:'/error')
         "404"(view:'/notFound')
     }
